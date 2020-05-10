@@ -1,14 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
+
 import classes from './Cockpit.module.css'
+import AuthContext from '../../context/auth-context';
 
 const Cockpit = (props) => {
+  const toggleBtnRef = useRef(null);
+
   useEffect(() => {
     console.log('[Cockpit.js] useEffect');
-    const timer = setTimeout(() =>{
-      alert('Saveddatatocloud!');
-    }, 1000);
+    // const timer = setTimeout(() =>{
+    //   alert('Saveddatatocloud!');
+    // }, 1000);
+    toggleBtnRef.current.click(); // called here so there is delay
     return () => {
-      clearTimeout(timer)
       console.log('[Cockpit.js] cleanup work in useEffect');
     }
   }, []); // only executes on 1st change
@@ -34,16 +38,21 @@ const Cockpit = (props) => {
       assignedClasses.push(classes.bold);// red and bold bc 2 if's
     }
 
-    return(<div className={classes.Cockpit}>
-        <h1>{props.mainTitle}</h1>
-        <h2>Hi, I'm a React App</h2>
-        
-    <p className={assignedClasses.join(' ')}>
-      This is really working</p>
-    <button 
-    className={btnClass}
-    onClick={props.clicked}>Toggle Person
-    </button>
-    </div> )
-}
+    return(
+    <div className={classes.Cockpit}>
+      <h1>{props.mainTitle}</h1>
+      <h2>Hi, I'm a React App</h2>
+      <p className={assignedClasses.join(' ')}>
+        This is really working</p>
+      <button ref={toggleBtnRef}
+      className={btnClass} onClick={props.clicked}>
+        Toggle Person
+      </button>
+      <AuthContext.Consumer>
+      {context => <button onClick={context.login}>Log in</button>}
+      </AuthContext.Consumer>
+    </div> 
+    );
+};
+
 export default React.memo(Cockpit);
