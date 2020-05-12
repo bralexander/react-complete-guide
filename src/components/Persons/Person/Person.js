@@ -16,9 +16,12 @@ class Person extends Component {
         super(props);
         this.inputElementRef = React.createRef();
     }
+    //can be accessed from outside/ allows react to give access to context 
+    static contextType = AuthContext;
 
     componentDidMount() {
         this.inputElementRef.current.focus();
+        console.log(this.context.authenticated);
     }
 
     render() {
@@ -26,11 +29,7 @@ class Person extends Component {
     return (
     /* <div className={classes.Person}> */
         <Aux>
-            <AuthContext.Consumer>
-            {(context) => 
-            context.authenticated ? <p>Authenticated!</p> : <p>Please Log in</p>
-            }
-            </AuthContext.Consumer>
+            {this.context.authenticated ? <p>Authenticated @ {this.props.time}</p> : <p>Please Log in</p>}
             <p onClick={this.props.click}>
                 I'm {this.props.name} and I am {this.props.age} years old!
             </p>
@@ -40,7 +39,7 @@ class Person extends Component {
             ref={this.inputElementRef}
             type="text" 
             onChange={this.props.changed}
-            value={this.props.name}/>}
+            value={this.props.name}/>
         </Aux>
     );
     }

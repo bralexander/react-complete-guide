@@ -43,6 +43,7 @@ class Persons extends PureComponent {
                 click={() => this.props.clicked(index)}
                 name={person.name} 
                 age={person.age}
+                time={this.props.date.toLocaleTimeString()}
                 changed={(event) => this.props.changed(event,person.id)}
                 />
                 );

@@ -18,7 +18,8 @@ class App extends Component {
       {id:'vasdf1', name: 'Danny', age:26},
       {id:'asdf11', name: 'Melisa', age:25}
     ],
-    otherState: 'some other value',
+    date: new Date(),
+    date2: new Date(),
     showPersons: false,
     showCockpit: true, 
     changeCounter: 0,
@@ -32,7 +33,14 @@ class App extends Component {
 
   componentDidMount() {
     console.log('[App.js] componentDidMount');
+    this.timerID = setInterval(() => this.tick(),1000);
   }
+
+  componentWillUnmount() {
+    clearInterval(this.timerID);
+  }
+
+  tick() {this.setState({date: new Date()});}
 
   shouldComponentUpdate(nextProps, nextState) {
     console.log('[App.js] shouldComponentUpdate');
@@ -78,7 +86,10 @@ class App extends Component {
 
   loginHandler = () => {
     this.setState({authenticated: true});
+    console.log(this.setState({date2: new Date()}))
+
   };
+
 
   render () {
     console.log('[App.js] render');
@@ -89,6 +100,7 @@ class App extends Component {
       persons = (
           <Persons 
           persons={this.state.persons}
+          date={this.state.date2}
           clicked={this.deletePersonHandler}
           changed={this.nameChangedHandler}
           isAuthenticated={this.state.authenticated}
@@ -111,6 +123,7 @@ class App extends Component {
           personsLength={this.state.persons.length}
           clicked={this.togglePersonsHandler} 
           mainTitle={this.props.appTitle}
+          time={this.state.date.toLocaleTimeString()}
           />
           ) : null}
           {persons}
